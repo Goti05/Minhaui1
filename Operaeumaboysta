@@ -1,83 +1,57 @@
 -- ================================================================
--- UI PVP MOBILE - VERSÃO 2.0 (MELHORADA PRA CARALHO)
+-- MINHA UI LIBRARY - VERSÃO FUNCIONAL
 -- ================================================================
 
 local MinhaUI = {}
 local player = game.Players.LocalPlayer
 local mouse = player:GetMouse()
 
-local Themes = {
-    Dark = {
-        bg = Color3.fromRGB(15, 15, 25),
-        card = Color3.fromRGB(30, 30, 45),
-        accent = Color3.fromRGB(0, 180, 255),
-        accent2 = Color3.fromRGB(255, 70, 120),
-        text = Color3.fromRGB(240, 240, 255),
-        textMuted = Color3.fromRGB(150, 150, 180),
-        success = Color3.fromRGB(0, 220, 100),
-        danger = Color3.fromRGB(255, 60, 60),
-        border = Color3.fromRGB(50, 50, 70)
-    }
-}
-
 function MinhaUI:CreateWindow(config)
-    local theme = Themes[config.Theme] or Themes.Dark
     local gui = Instance.new("ScreenGui")
-    gui.Name = config.Name or "PvP_Ultra"
+    gui.Name = config.Name or "MinhaUI"
     gui.ResetOnSpawn = false
     gui.Parent = player:WaitForChild("PlayerGui")
     
-    -- Janela principal com borda
     local window = Instance.new("Frame")
-    window.Size = UDim2.new(0, 380, 0, 500)
-    window.Position = UDim2.new(0.5, -190, 0.5, -250)
-    window.BackgroundColor3 = theme.bg
-    window.BorderSizePixel = 2
-    window.BorderColor3 = theme.border
+    window.Size = UDim2.new(0, 350, 0, 450)
+    window.Position = UDim2.new(0.5, -175, 0.5, -225)
+    window.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+    window.BorderSizePixel = 0
     window.ClipsDescendants = true
     window.Parent = gui
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, 12)
     corner.Parent = window
     
-    -- Topbar com gradiente
+    -- Topbar
     local topbar = Instance.new("Frame")
-    topbar.Size = UDim2.new(1, 0, 0, 50)
-    topbar.BackgroundColor3 = theme.card
+    topbar.Size = UDim2.new(1, 0, 0, 40)
+    topbar.BackgroundColor3 = Color3.fromRGB(35, 35, 50)
     topbar.BorderSizePixel = 0
     topbar.Parent = window
     local topCorner = Instance.new("UICorner")
     topCorner.CornerRadius = UDim.new(0, 12)
     topCorner.Parent = topbar
     
-    -- Gradiente
-    local gradient = Instance.new("UIGradient")
-    gradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, theme.card),
-        ColorSequenceKeypoint.new(1, theme.bg)
-    })
-    gradient.Parent = topbar
-    
     local title = Instance.new("TextLabel")
-    title.Text = config.Title or "⚡ PVP ULTRA ⚡"
-    title.Size = UDim2.new(1, -70, 1, 0)
-    title.Position = UDim2.new(0, 20, 0, 0)
+    title.Text = config.Title or "Minha UI"
+    title.Size = UDim2.new(1, -50, 1, 0)
+    title.Position = UDim2.new(0, 15, 0, 0)
     title.BackgroundTransparency = 1
-    title.TextColor3 = theme.text
+    title.TextColor3 = Color3.fromRGB(255, 255, 255)
     title.Font = Enum.Font.GothamBold
-    title.TextSize = 18
+    title.TextSize = 16
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = topbar
     
-    -- Botão fechar estilizado
     local close = Instance.new("TextButton")
     close.Text = "✕"
-    close.Size = UDim2.new(0, 35, 0, 35)
-    close.Position = UDim2.new(1, -45, 0.5, -17.5)
-    close.BackgroundColor3 = theme.danger
+    close.Size = UDim2.new(0, 32, 0, 32)
+    close.Position = UDim2.new(1, -40, 0.5, -16)
+    close.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
     close.TextColor3 = Color3.new(1,1,1)
     close.Font = Enum.Font.GothamBold
-    close.TextSize = 20
+    close.TextSize = 18
     close.BorderSizePixel = 0
     close.Parent = topbar
     local closeCorner = Instance.new("UICorner")
@@ -85,30 +59,19 @@ function MinhaUI:CreateWindow(config)
     closeCorner.Parent = close
     close.MouseButton1Click:Connect(function() gui:Destroy() end)
     
-    -- Sistema de Abas (Melhorado)
-    local tabBar = Instance.new("Frame")
-    tabBar.Size = UDim2.new(1, 0, 0, 45)
-    tabBar.Position = UDim2.new(0, 0, 0, 50)
-    tabBar.BackgroundTransparency = 1
-    tabBar.Parent = window
-    
-    local tabs = {}
-    local activeTab = nil
-    local tabButtons = {}
-    
-    -- Conteúdo (com padding)
+    -- Conteúdo (ScrollingFrame)
     local content = Instance.new("ScrollingFrame")
-    content.Size = UDim2.new(1, 0, 1, -95)
-    content.Position = UDim2.new(0, 0, 0, 95)
+    content.Size = UDim2.new(1, 0, 1, -40)
+    content.Position = UDim2.new(0, 0, 0, 40)
     content.BackgroundTransparency = 1
     content.CanvasSize = UDim2.new(0, 0, 0, 0)
     content.ScrollBarThickness = 4
-    content.ScrollBarImageColor3 = theme.accent
+    content.ScrollBarImageColor3 = Color3.fromRGB(255, 70, 120)
     content.Parent = window
     
     local contentList = Instance.new("UIListLayout")
     contentList.Parent = content
-    contentList.Padding = UDim.new(0, 10)
+    contentList.Padding = UDim.new(0, 8)
     contentList.SortOrder = Enum.SortOrder.LayoutOrder
     
     -- Arrastar
@@ -130,205 +93,59 @@ function MinhaUI:CreateWindow(config)
         end
     end)
     
-    -- Funções internas
-    local function clearContent()
-        for _, child in ipairs(content:GetChildren()) do
-            if child ~= contentList then
-                child:Destroy()
-            end
-        end
-    end
-    
-    local function switchTab(tabId)
-        activeTab = tabId
-        clearContent()
-        for _, btn in pairs(tabButtons) do
-            btn.BackgroundColor3 = Color3.fromRGB(35, 35, 50)
-            btn.TextColor3 = theme.textMuted
-        end
-        if tabButtons[tabId] then
-            tabButtons[tabId].BackgroundColor3 = theme.accent2
-            tabButtons[tabId].TextColor3 = Color3.new(1,1,1)
-        end
-        local tabData = tabs[tabId]
-        if tabData and tabData.render then
-            tabData.render(content, theme)
-        end
-    end
-    
     local self = {
-        _gui = gui,
-        _window = window,
         _content = content,
-        _theme = theme,
-        _switchTab = switchTab,
-        _tabs = tabs,
-        _tabButtons = tabButtons,
+        _window = window,
+        _gui = gui
     }
     
-    -- Criar Aba
     function self:CreateTab(config)
-        local id = config.Name or "Tab" .. (#tabs + 1)
-        local btn = Instance.new("TextButton")
-        btn.Name = id
-        btn.Text = config.Icon and (config.Icon .. " " .. config.Name) or config.Name
-        btn.Size = UDim2.new(1 / (#tabs + 1), -4, 1, -6)
-        btn.Position = UDim2.new(#tabs / (#tabs + 1), 2, 0, 3)
-        btn.BackgroundColor3 = (#tabs == 0) and theme.accent2 or Color3.fromRGB(35, 35, 50)
-        btn.TextColor3 = (#tabs == 0) and Color3.new(1,1,1) or theme.textMuted
-        btn.Font = Enum.Font.GothamSemibold
-        btn.TextSize = 13
-        btn.BorderSizePixel = 0
-        btn.Parent = tabBar
-        local btnCorner = Instance.new("UICorner")
-        btnCorner.CornerRadius = UDim.new(0, 8)
-        btnCorner.Parent = btn
-        tabButtons[id] = btn
-        
-        local tabData = {
-            id = id,
-            name = config.Name,
-            icon = config.Icon,
-            render = function(parent, theme) end,
-            _sections = {},
-        }
-        tabs[id] = tabData
-        
-        btn.MouseButton1Click:Connect(function()
-            if activeTab ~= id then
-                self._switchTab(id)
-            end
-        end)
-        
-        if #tabs == 1 then
-            self._switchTab(id)
-        end
-        
-        local tabAPI = {
-            _tabId = id,
-            _parent = self,
-        }
-        
-        function tabAPI:CreateSection(name)
-            local sectionData = {
-                name = name,
-                _children = {},
-            }
-            table.insert(tabData._sections, sectionData)
-            
-            local function renderTab(parent, theme)
-                for _, sec in ipairs(tabData._sections) do
-                    local sectionFrame = Instance.new("Frame")
-                    sectionFrame.Size = UDim2.new(0.94, 0, 0, 0)
-                    sectionFrame.Position = UDim2.new(0.03, 0, 0, 0)
-                    sectionFrame.BackgroundTransparency = 1
-                    sectionFrame.Parent = parent
-                    
-                    local titleLabel = Instance.new("TextLabel")
-                    titleLabel.Text = sec.name
-                    titleLabel.Size = UDim2.new(1, 0, 0, 28)
-                    titleLabel.BackgroundTransparency = 1
-                    titleLabel.TextColor3 = theme.accent
-                    titleLabel.Font = Enum.Font.GothamBold
-                    titleLabel.TextSize = 14
-                    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
-                    titleLabel.Parent = sectionFrame
-                    
-                    local sectionList = Instance.new("UIListLayout")
-                    sectionList.Parent = sectionFrame
-                    sectionList.Padding = UDim.new(0, 8)
-                    sectionList.SortOrder = Enum.SortOrder.LayoutOrder
-                    
-                    for _, childData in ipairs(sec._children) do
-                        childData._create(sectionFrame, theme)
-                    end
-                    
-                    task.wait(0.05)
-                    sectionFrame.Size = UDim2.new(0.94, 0, 0, sectionList.AbsoluteContentSize.Y + 35)
-                end
-            end
-            
-            tabData.render = renderTab
-            
-            if activeTab == tabData.id then
-                clearContent()
-                renderTab(self._content, self._theme)
-            end
-            
-            local sectionAPI = {
-                _parent = tabAPI,
-                _sectionData = sectionData,
-            }
-            
-            function sectionAPI:CreateButton(config)
-                local data = {
-                    _create = function(parent, theme)
+        return {
+            CreateSection = function(name)
+                return {
+                    CreateButton = function(config)
                         local btn = Instance.new("TextButton")
-                        btn.Size = UDim2.new(1, -10, 0, 42)
-                        btn.Position = UDim2.new(0, 5, 0, 0)
+                        btn.Size = UDim2.new(0.92, 0, 0, 40)
+                        btn.Position = UDim2.new(0.04, 0, 0, 0)
                         btn.Text = config.Name or "Botão"
-                        btn.BackgroundColor3 = config.Color or theme.card
-                        btn.TextColor3 = theme.text
+                        btn.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
+                        btn.TextColor3 = Color3.fromRGB(255, 255, 255)
                         btn.Font = Enum.Font.GothamSemibold
                         btn.TextSize = 14
                         btn.BorderSizePixel = 0
                         local btnCorner = Instance.new("UICorner")
                         btnCorner.CornerRadius = UDim.new(0, 8)
                         btnCorner.Parent = btn
-                        btn.Parent = parent
+                        btn.Parent = self._content
                         btn.MouseButton1Click:Connect(config.Callback or function() end)
-                        
-                        -- Efeito hover (toque)
-                        btn.InputBegan:Connect(function(input)
-                            if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-                                btn.BackgroundColor3 = theme.accent
-                                btn.TextColor3 = Color3.new(1,1,1)
-                            end
-                        end)
-                        btn.InputEnded:Connect(function(input)
-                            if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-                                btn.BackgroundColor3 = config.Color or theme.card
-                                btn.TextColor3 = theme.text
-                            end
-                        end)
-                    end
-                }
-                table.insert(sectionData._children, data)
-                if activeTab == tabData.id then
-                    clearContent()
-                    tabData.render(self._content, self._theme)
-                end
-                return sectionAPI
-            end
-            
-            function sectionAPI:CreateToggle(config)
-                local data = {
-                    _create = function(parent, theme)
+                        return {}
+                    end,
+                    CreateToggle = function(config)
                         local frame = Instance.new("Frame")
-                        frame.Size = UDim2.new(1, -10, 0, 42)
-                        frame.Position = UDim2.new(0, 5, 0, 0)
-                        frame.BackgroundColor3 = theme.card
+                        frame.Size = UDim2.new(0.92, 0, 0, 40)
+                        frame.Position = UDim2.new(0.04, 0, 0, 0)
+                        frame.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
                         frame.BorderSizePixel = 0
                         local frameCorner = Instance.new("UICorner")
                         frameCorner.CornerRadius = UDim.new(0, 8)
                         frameCorner.Parent = frame
-                        frame.Parent = parent
+                        frame.Parent = self._content
                         
                         local label = Instance.new("TextLabel")
                         label.Text = config.Name or "Toggle"
                         label.Size = UDim2.new(0.7, 0, 1, 0)
-                        label.Position = UDim2.new(0, 14, 0, 0)
+                        label.Position = UDim2.new(0, 12, 0, 0)
                         label.BackgroundTransparency = 1
-                        label.TextColor3 = theme.text
+                        label.TextColor3 = Color3.fromRGB(255, 255, 255)
                         label.Font = Enum.Font.Gotham
-                        label.TextSize = 14
+                        label.TextSize = 13
                         label.TextXAlignment = Enum.TextXAlignment.Left
                         label.Parent = frame
                         
                         local toggleBtn = Instance.new("TextButton")
-                        toggleBtn.Size = UDim2.new(0, 55, 0, 28)
-                        toggleBtn.Position = UDim2.new(1, -62, 0.5, -14)
-                        toggleBtn.BackgroundColor3 = config.Default and theme.success or theme.danger
+                        toggleBtn.Size = UDim2.new(0, 50, 0, 26)
+                        toggleBtn.Position = UDim2.new(1, -58, 0.5, -13)
+                        toggleBtn.BackgroundColor3 = config.Default and Color3.fromRGB(0, 200, 100) or Color3.fromRGB(200, 50, 50)
                         toggleBtn.Text = config.Default and "ON" or "OFF"
                         toggleBtn.TextColor3 = Color3.new(1,1,1)
                         toggleBtn.Font = Enum.Font.GothamBold
@@ -342,49 +159,39 @@ function MinhaUI:CreateWindow(config)
                         local state = config.Default or false
                         toggleBtn.MouseButton1Click:Connect(function()
                             state = not state
-                            toggleBtn.BackgroundColor3 = state and theme.success or theme.danger
+                            toggleBtn.BackgroundColor3 = state and Color3.fromRGB(0, 200, 100) or Color3.fromRGB(200, 50, 50)
                             toggleBtn.Text = state and "ON" or "OFF"
                             if config.Callback then config.Callback(state) end
                         end)
                         if config.Callback then config.Callback(state) end
-                    end
-                }
-                table.insert(sectionData._children, data)
-                if activeTab == tabData.id then
-                    clearContent()
-                    tabData.render(self._content, self._theme)
-                end
-                return sectionAPI
-            end
-            
-            function sectionAPI:CreateSlider(config)
-                local data = {
-                    _create = function(parent, theme)
+                        return {}
+                    end,
+                    CreateSlider = function(config)
                         local frame = Instance.new("Frame")
-                        frame.Size = UDim2.new(1, -10, 0, 65)
-                        frame.Position = UDim2.new(0, 5, 0, 0)
-                        frame.BackgroundColor3 = theme.card
+                        frame.Size = UDim2.new(0.92, 0, 0, 60)
+                        frame.Position = UDim2.new(0.04, 0, 0, 0)
+                        frame.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
                         frame.BorderSizePixel = 0
                         local frameCorner = Instance.new("UICorner")
                         frameCorner.CornerRadius = UDim.new(0, 8)
                         frameCorner.Parent = frame
-                        frame.Parent = parent
+                        frame.Parent = self._content
                         
                         local label = Instance.new("TextLabel")
                         label.Text = (config.Name or "Slider") .. ": " .. (config.Default or 0)
-                        label.Size = UDim2.new(1, -20, 0, 28)
-                        label.Position = UDim2.new(0, 14, 0, 5)
+                        label.Size = UDim2.new(1, -20, 0, 25)
+                        label.Position = UDim2.new(0, 12, 0, 5)
                         label.BackgroundTransparency = 1
-                        label.TextColor3 = theme.text
+                        label.TextColor3 = Color3.fromRGB(255, 255, 255)
                         label.Font = Enum.Font.Gotham
                         label.TextSize = 13
                         label.TextXAlignment = Enum.TextXAlignment.Left
                         label.Parent = frame
                         
                         local sliderBg = Instance.new("Frame")
-                        sliderBg.Size = UDim2.new(0.82, 0, 0, 6)
-                        sliderBg.Position = UDim2.new(0.09, 0, 0.7, 0)
-                        sliderBg.BackgroundColor3 = Color3.fromRGB(50, 50, 70)
+                        sliderBg.Size = UDim2.new(0.8, 0, 0, 6)
+                        sliderBg.Position = UDim2.new(0.1, 0, 0.7, 0)
+                        sliderBg.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
                         sliderBg.BorderSizePixel = 0
                         sliderBg.Parent = frame
                         local sliderCorner = Instance.new("UICorner")
@@ -394,7 +201,7 @@ function MinhaUI:CreateWindow(config)
                         local fill = Instance.new("Frame")
                         local defaultPos = (config.Default - config.Min) / (config.Max - config.Min)
                         fill.Size = UDim2.new(defaultPos, 0, 1, 0)
-                        fill.BackgroundColor3 = theme.accent
+                        fill.BackgroundColor3 = Color3.fromRGB(255, 70, 120)
                         fill.BorderSizePixel = 0
                         fill.Parent = sliderBg
                         local fillCorner = Instance.new("UICorner")
@@ -423,20 +230,11 @@ function MinhaUI:CreateWindow(config)
                         mouse.Move:Connect(function()
                             if dragging then update(mouse.X) end
                         end)
+                        return {}
                     end
                 }
-                table.insert(sectionData._children, data)
-                if activeTab == tabData.id then
-                    clearContent()
-                    tabData.render(self._content, self._theme)
-                end
-                return sectionAPI
             end
-            
-            return sectionAPI
-        end
-        
-        return tabAPI
+        }
     end
     
     return self
